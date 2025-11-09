@@ -15,3 +15,16 @@ packages = [{ include = "labyrinth_game" }]
 
 [tool.poetry.scripts]
 project = "labyrinth_game.main:main"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.4,<0.15.0)"
+]
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = [".venv", "dist", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
