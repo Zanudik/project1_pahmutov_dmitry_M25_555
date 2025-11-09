@@ -1,10 +1,38 @@
 #!/usr/bin/env python3
-
 from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import describe_current_room 
-from labyrinth_game.player_actions import get_input
+from labyrinth_game.utils import describe_current_room, show_help
+from labyrinth_game.player_actions import get_input, move_player, take_item, show_inventory, use_item
+
+def process_command(game_state, command):
+    parts = command.split()
+    if not parts:
+        return
+    cmd = parts[0].lower()
+    args = parts[1:] if len(parts) > 1 else []
+    
+    match cmd:
+        case "go":
+            if args:
+                move_player(game_state, args[0])
+        case "take":
+            if args:
+                take_item(game_state, args[0])
+        case "use":
+            if args:
+                use_item(game_state, args[0])
+        case "look":
+            describe_current_room(game_state)
+        case "inventory":
+            show_inventory(game_state)
+        case "quit" | "exit":
+            game_state['game_over'] = True
+        case "help":
+            show_help()
+        case _:
+            print("Неизвестная команда. Введите 'help' для справки.")
 
 def main():
+    
     print("Добро пожаловать в Лабиринт сокровищ!")
     
     game_state = {
@@ -18,9 +46,7 @@ def main():
     
     while not game_state['game_over']:
         command = get_input()
-        # Пока не обрабатываем команду — просто выходим при "quit"
-        if command == "quit":
-            break
+        process_command(game_state, command)
    
 if __name__ == "__main__":
     main()
