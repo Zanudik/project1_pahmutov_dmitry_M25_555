@@ -1,0 +1,17 @@
+[project]
+name = "project1_pahmutov_dmitry_M25_555"
+version = "0.1.0"
+description = ""
+authors = []
+requires-python = ">=3.11"
+dependencies = []
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "labyrinth_game" }]
+
+[tool.poetry.scripts]
+project = "labyrinth_game.main:main"
