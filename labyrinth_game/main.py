@@ -28,6 +28,13 @@ def process_command(game_state, command):
             game_state['game_over'] = True
         case "help":
             show_help()
+        case "solve":
+            if game_state['current_room'] == "treasure_room":
+                from labyrinth_game.utils import attempt_open_treasure
+                attempt_open_treasure(game_state)
+            else:
+                from labyrinth_game.utils import solve_puzzle
+                solve_puzzle(game_state)
         case _:
             print("Неизвестная команда. Введите 'help' для справки.")
 
