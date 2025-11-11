@@ -1,11 +1,7 @@
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import random_event
 
-
 def show_inventory(game_state):
-    """
-    Выводит содержимое инвентаря игрока.
-    """
     inventory = game_state["player"]["inventory"]
     if inventory:
         print("Инвентарь:", ", ".join(inventory))
@@ -19,7 +15,6 @@ def get_input(prompt="> "):
         print("\nВыход из игры.")
         return "quit"
 
-
 def move_player(game_state, direction):
     current_room = game_state["player"]["current_room"]
     rooms = game_state["rooms"]
@@ -30,13 +25,9 @@ def move_player(game_state, direction):
 
     next_room = rooms[current_room]["exits"][direction]
 
-    if next_room == "treasure_room":
-        if "rusty_key" in game_state["player"]["inventory"]:
-            print("Вы используете найденный ключ, \
-                  чтобы открыть путь в комнату сокровищ.")
-        else:
-            print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
-            return
+    if next_room == "treasure_room" and "rusty_key" not in game_state["player"]["inventory"]:
+        print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
+        return
 
     game_state["player"]["current_room"] = next_room
     game_state["steps"] += 1
@@ -48,7 +39,6 @@ def move_player(game_state, direction):
     print("Выходы:", ", ".join(rooms[next_room]["exits"].keys()))
 
     random_event(game_state)
-
 
 def take_item(game_state, item_name):
     if item_name == "treasure_chest":
@@ -72,10 +62,11 @@ def use_item(game_state, item_name):
                 print("Факел освещает путь. Стало светлее!")
             case "sword":
                 print("Вы чувствуете себя увереннее.")
-            case "bronze box":
+            case "bronze_box":
                 print("Вы открыли бронзовую шкатулку.")
                 if 'rusty_key' not in game_state["player"]["inventory"]:
                     game_state["player"]["inventory"].append('rusty_key')
+                    print("Вы нашли ржавый ключ!")
             case _:
                 print("Неизвестно как использовать.")
     else:
