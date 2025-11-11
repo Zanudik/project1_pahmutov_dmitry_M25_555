@@ -41,7 +41,7 @@ def move_player(game_state, direction):
     game_state["player"]["current_room"] = next_room
     game_state["steps"] += 1
 
-    print(f"➡️ Вы переместились в {next_room}.")
+    print(f"Вы переместились в {next_room}.")
     print(rooms[next_room]["description"])
     if rooms[next_room]["items"]:
         print("Заметные предметы:", ", ".join(rooms[next_room]["items"]))

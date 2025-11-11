@@ -2,6 +2,8 @@ import math
 
 from labyrinth_game.constants import ROOMS
 
+NUM_COMMANDS = 16 # Число доступных комманд
+NUM_PSEUDO_RAND = 10 # Число случайных чисел
 
 def describe_current_room(game_state):
     room_name = game_state["player"]["current_room"]
@@ -21,7 +23,7 @@ def describe_current_room(game_state):
 def show_help(COMMANDS):
     print("\n Доступные команды:")
     for cmd, desc in COMMANDS.items():
-        print(f"{cmd.ljust(16)} — {desc}")
+        print(f"{cmd.ljust(NUM_COMMANDS)} — {desc}")
 
 
 def solve_puzzle(game_state):
@@ -120,7 +122,7 @@ def trigger_trap(game_state):
         lost_item = inventory.pop(index)
         print(f"Вы потеряли предмет: {lost_item}!")
     else:
-        danger = pseudo_random(game_state["steps"], 10)
+        danger = pseudo_random(game_state["steps"], NUM_PSEUDO_RAND)
         if danger < 3:
             print("Ловушка оказалась смертельной! Вы погибли.")
             game_state["game_over"] = True
@@ -135,7 +137,7 @@ def random_event(game_state):
     current_room = game_state["player"]["current_room"]
     room_data = game_state["rooms"][current_room]
 
-    if pseudo_random(seed, 10) != 0:
+    if pseudo_random(seed, NUM_PSEUDO_RAND) != 0:
         return
 
     event_type = pseudo_random(seed + 1, 3)
