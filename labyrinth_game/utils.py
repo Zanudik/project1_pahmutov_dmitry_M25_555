@@ -4,7 +4,7 @@ from labyrinth_game.constants import ROOMS
 
 
 def describe_current_room(game_state):
-    room_name = game_state['current_room']
+    room_name = game_state["player"]["current_room"]
     room_data = ROOMS[room_name]
 
     print(f'== {room_name.upper()} ==')
@@ -23,36 +23,48 @@ def show_help(COMMANDS):
     for cmd, desc in COMMANDS.items():
         print(f"{cmd.ljust(16)} — {desc}")
 
+
 def solve_puzzle(game_state):
     current_room = game_state["player"]["current_room"]
+    rooms = game_state["rooms"]
 
-    if "puzzle" not in game_state["rooms"][current_room]:
+    puzzle = rooms[current_room].get("puzzle")
+    if not puzzle:
         print("Здесь нет загадок.")
         return
 
-    puzzle = game_state["rooms"][current_room]["puzzle"]
-    answer = input(puzzle["question"] + "\n> ").strip().lower()
+    question, answer = puzzle[0], puzzle[1]
 
-    valid_answers = [puzzle["answer"].lower()]
-    if "alt_answers" in puzzle:
+    user_input = input(question + "\n> ").strip().lower()
+
+    valid_answers = [str(answer).lower()]
+
+    if isinstance(puzzle, dict) and "alt_answers" in puzzle:
         valid_answers.extend([alt.lower() for alt in puzzle["alt_answers"]])
 
-    if answer in valid_answers:
+    if user_input in valid_answers:
         print("Загадка решена!")
 
-        if current_room == "puzzle_room":
-            game_state["player"]["inventory"].append("rusty_key")
-            print("Вы получили предмет: ржавый ключ!")
-        elif current_room == "trap_room":
+        if current_room == "trap_room" and "torch" \
+            not in game_state["player"]["inventory"]:
             game_state["player"]["inventory"].append("torch")
             print("Вы нашли факел — теперь ловушки вам не страшны.")
+        elif current_room == "hall" and "rusty_key" \
+            not in game_state["player"]["inventory"]:
+            game_state["player"]["inventory"].append("rusty_key")
+            print("Вы получили предмет: ржавый ключ!")
+        elif current_room == "library" and "ancient_book" \
+            not in game_state["player"]["inventory"]:
+            game_state["player"]["inventory"].append("ancient_book")
+            print("Вы получили предмет: древняя книга!")
     else:
-        print("❌ Неверный ответ.")
+        print("Неверный ответ.")
         if current_room == "trap_room":
             trigger_trap(game_state)
 
+
 def attempt_open_treasure(game_state):
-    if game_state['current_room'] != 'treasure_room':
+    if game_state["player"]["current_room"] != 'treasure_room':
         print("Здесь нет сундука с сокровищем.")
         return
 
@@ -62,7 +74,7 @@ def attempt_open_treasure(game_state):
         print("Сундук уже открыт.")
         return
 
-    if 'rusty_key' in game_state['player_inventory']:
+    if 'rusty_key' in game_state["player"]["inventory"]:
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         room['items'].remove('treasure_chest')
         print("В сундуке сокровище! Вы победили!")
@@ -117,19 +129,20 @@ def trigger_trap(game_state):
 
 def random_event(game_state):
     """
-    Иногда происходят случайные события после перемещения.
+    Иногда происходят случайные события после перемещения игрока.
     """
     seed = game_state["steps"]
-    event_trigger = pseudo_random(seed, 10)
+    current_room = game_state["player"]["current_room"]
+    room_data = game_state["rooms"][current_room]
 
-    if event_trigger != 0:
+    if pseudo_random(seed, 10) != 0:
         return
 
     event_type = pseudo_random(seed + 1, 3)
 
     if event_type == 0:
         print("Вы нашли блестящую монетку на полу!")
-        game_state["rooms"][game_state["player"]["current_room"]]["items"].append("coin")
+        room_data["items"].append("coin")
 
     elif event_type == 1:
         print("Вы слышите странный шорох где-то рядом...")
@@ -137,7 +150,7 @@ def random_event(game_state):
             print("Вы вскидываете меч, и тень мгновенно исчезает!")
 
     elif event_type == 2:
-        current_room = game_state["player"]["current_room"]
         if "trap" in current_room and "torch" not in game_state["player"]["inventory"]:
             print("Воздух вокруг сгущается — что-то не так!")
             trigger_trap(game_state)
+
