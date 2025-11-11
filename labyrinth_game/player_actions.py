@@ -59,7 +59,7 @@ def take_item(game_state, item_name):
     items = room['items']
 
     if item_name in items:
-        game_state["player"]["inventory"].append(item_name)    
+        game_state["player"]["inventory"].append(item_name)
         room['items'].remove(item_name)
         print("Вы подняли:", item_name)
     else:
