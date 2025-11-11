@@ -3,6 +3,12 @@ from labyrinth_game.utils import attempt_open_treasure, random_event
 
 
 def show_inventory(game_state):
+    """
+    Выводит текущий инвентарь игрока.
+
+    Args:
+        game_state (dict): Состояние игры, включая инвентарь игрока.
+    """
     inventory = game_state["player"]["inventory"]
     if inventory:
         print("Инвентарь:", ", ".join(inventory))
@@ -10,6 +16,15 @@ def show_inventory(game_state):
         print("Инвентарь пуст.")
 
 def get_input(prompt="> "):
+    """
+    Получает ввод игрока с консоли. Обрабатывает прерывания.
+
+    Args:
+        prompt (str): Приглашение к вводу.
+
+    Returns:
+        str: Введённая команда.
+    """
     try:
         return input(prompt).strip()
     except (KeyboardInterrupt, EOFError):
@@ -17,6 +32,15 @@ def get_input(prompt="> "):
         return "quit"
 
 def move_player(game_state, direction):
+    """
+    Перемещает игрока в указанном направлении, если это возможно.
+    Проверяет наличие ключа для доступа к treasure_room.
+    Может вызвать случайные события.
+
+    Args:
+        game_state (dict): Состояние игры.
+        direction (str): Направление перемещения ('north', 'south', 'east', 'west').
+    """
     current_room = game_state["player"]["current_room"]
     rooms = game_state["rooms"]
 
@@ -43,6 +67,13 @@ def move_player(game_state, direction):
     random_event(game_state)
 
 def take_item(game_state, item_name):
+    """
+    Позволяет игроку подобрать предмет из текущей комнаты.
+
+    Args:
+        game_state (dict): Состояние игры.
+        item_name (str): Название предмета для взятия.
+    """
     if item_name == "treasure_chest":
         print("Вы не можете поднять сундук, он слишком тяжелый.")
         return
@@ -58,6 +89,14 @@ def take_item(game_state, item_name):
         print("Такого предмета здесь нет.")
 
 def use_item(game_state, item_name):
+    """
+    Позволяет использовать предмет из инвентаря.
+    Реализует эффекты факела, меча, бронзовой шкатулки и ключа.
+
+    Args:
+        game_state (dict): Состояние игры.
+        item_name (str): Название предмета для использования.
+    """
     if item_name in game_state["player"]["inventory"]:
         match item_name:
             case "torch":

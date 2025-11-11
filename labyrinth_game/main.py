@@ -16,6 +16,13 @@ from labyrinth_game.utils import (
 
 
 def process_command(command, game_state):
+    """
+    Обрабатывает команду игрока и выполняет соответствующее действие.
+
+    Args:
+        command (str): Команда, введённая игроком.
+        game_state (dict): Текущее состояние игры.
+    """
     cmd = command.strip().lower().split()
     if not cmd:
         return
@@ -66,6 +73,12 @@ def process_command(command, game_state):
 
 
 def main():
+    """
+    Основная функция игры.
+
+    Инициализирует состояние игры, приветствует игрока,
+    выводит описание текущей комнаты и запускает игровую петлю.
+    """
     print("Добро пожаловать в Лабиринт сокровищ!")
 
     game_state = {

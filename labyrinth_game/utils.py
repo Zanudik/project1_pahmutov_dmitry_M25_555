@@ -6,6 +6,12 @@ NUM_COMMANDS = 16
 NUM_PSEUDO_RAND = 10
 
 def describe_current_room(game_state):
+    """
+    Выводит описание текущей комнаты, заметные предметы и возможные выходы.
+
+    Args:
+        game_state (dict): Состояние игры.
+    """
     room_name = game_state["player"]["current_room"]
     room_data = ROOMS[room_name]
 
@@ -21,11 +27,24 @@ def describe_current_room(game_state):
         print("Кажется, здесь есть загадка (используйте команду solve).")
 
 def show_help(COMMANDS):
+    """
+    Выводит список доступных команд и их описание.
+
+    Args:
+        COMMANDS (dict): Словарь команд и их описаний.
+    """
     print("\n Доступные команды:")
     for cmd, desc in COMMANDS.items():
         print(f"{cmd.ljust(NUM_COMMANDS)} — {desc}")
 
 def solve_puzzle(game_state):
+    """
+    Позволяет игроку решить загадку в текущей комнате.
+    В случае верного ответа добавляет предметы в инвентарь.
+
+    Args:
+        game_state (dict): Состояние игры.
+    """
     current_room = game_state["player"]["current_room"]
     rooms = game_state["rooms"]
     puzzle = rooms[current_room].get("puzzle")
@@ -60,6 +79,13 @@ def solve_puzzle(game_state):
             trigger_trap(game_state)
 
 def attempt_open_treasure(game_state):
+    """
+    Открывает сундук в treasure_room, если есть ключ или введён верный код.
+    Завершает игру при успешном открытии.
+
+    Args:
+        game_state (dict): Состояние игры.
+    """
     room = ROOMS['treasure_room']
     if 'treasure_chest' not in room['items']:
         print("Сундук уже открыт.")
@@ -86,11 +112,28 @@ def attempt_open_treasure(game_state):
         print("Вы отступаете от сундука.")
 
 def pseudo_random(seed, modulo):
+    """
+    Генерирует псевдослучайное число на основе синуса.
+
+    Args:
+        seed (int): Значение для генерации.
+        modulo (int): Максимальное значение.
+
+    Returns:
+        int: Псевдослучайное число в диапазоне [0, modulo-1].
+    """
     x = math.sin(seed * 12.9898) * 43758.5453
     fractional = x - math.floor(x)
     return int(fractional * modulo)
 
 def trigger_trap(game_state):
+    """
+    Активирует ловушку в текущей комнате.
+    Может удалить предмет из инвентаря или завершить игру.
+
+    Args:
+        game_state (dict): Состояние игры.
+    """
     print("Ловушка активирована! Пол стал дрожать...")
     inventory = game_state["player"]["inventory"]
     if inventory:
@@ -106,6 +149,13 @@ def trigger_trap(game_state):
             print("Вам чудом удалось уцелеть!")
 
 def random_event(game_state):
+    """
+    Вызывает случайные события в комнате на основе количества шагов игрока.
+    Может добавить предмет, напугать игрока или активировать ловушку.
+
+    Args:
+        game_state (dict): Состояние игры.
+    """
     seed = game_state["steps"]
     current_room = game_state["player"]["current_room"]
     room_data = game_state["rooms"][current_room]
