@@ -1,6 +1,7 @@
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import random_event
 
+
 def show_inventory(game_state):
     inventory = game_state["player"]["inventory"]
     if inventory:
@@ -25,7 +26,8 @@ def move_player(game_state, direction):
 
     next_room = rooms[current_room]["exits"][direction]
 
-    if next_room == "treasure_room" and "rusty_key" not in game_state["player"]["inventory"]:
+    if next_room == "treasure_room" and "rusty_key" \
+        not in game_state["player"]["inventory"]:
         print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
         return
 

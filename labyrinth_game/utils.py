@@ -1,4 +1,5 @@
 import math
+
 from labyrinth_game.constants import ROOMS
 
 NUM_COMMANDS = 16
@@ -41,13 +42,16 @@ def solve_puzzle(game_state):
 
     if user_input in valid_answers:
         print("Загадка решена!")
-        if current_room == "trap_room" and "torch" not in game_state["player"]["inventory"]:
+        if current_room == "trap_room" and "torch" \
+            not in game_state["player"]["inventory"]:
             game_state["player"]["inventory"].append("torch")
             print("Вы нашли факел — теперь ловушки вам не страшны.")
-        elif current_room == "hall" and "rusty_key" not in game_state["player"]["inventory"]:
+        elif current_room == "hall" and "rusty_key" \
+            not in game_state["player"]["inventory"]:
             game_state["player"]["inventory"].append("rusty_key")
             print("Вы получили предмет: ржавый ключ!")
-        elif current_room == "library" and "ancient_book" not in game_state["player"]["inventory"]:
+        elif current_room == "library" and "ancient_book" \
+            not in game_state["player"]["inventory"]:
             game_state["player"]["inventory"].append("ancient_book")
             print("Вы получили предмет: древняя книга!")
     else:
@@ -119,6 +123,7 @@ def random_event(game_state):
         if "sword" in game_state["player"]["inventory"]:
             print("Вы вскидываете меч, и тень мгновенно исчезает!")
     elif event_type == 2:
-        if "trap" in current_room and "torch" not in game_state["player"]["inventory"]:
+        if "trap" in current_room and "torch" \
+            not in game_state["player"]["inventory"]:
             print("Воздух вокруг сгущается — что-то не так!")
             trigger_trap(game_state)
