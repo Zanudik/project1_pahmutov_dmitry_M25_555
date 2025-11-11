@@ -1,5 +1,5 @@
 from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import random_event, attempt_open_treasure
+from labyrinth_game.utils import attempt_open_treasure, random_event
 
 
 def show_inventory(game_state):
