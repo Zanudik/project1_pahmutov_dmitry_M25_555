@@ -58,8 +58,7 @@ make project
 ```
 ## Демонстрация игрового процесса
 
-[![Asciinema demo](https://asciinema.org/a/bjnF7wTy4u07XpWa5BxiHvgf7
-.svg)](https://asciinema.org/a/bjnF7wTy4u07XpWa5BxiHvgf7
-)
+[![Asciinema demo](https://asciinema.org/a/bjnF7wTy4u07XpWa5BxiHvgf7.svg)](https://asciinema.org/a/bjnF7wTy4u07XpWa5BxiHvgf7)
+
 
 
