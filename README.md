@@ -54,7 +54,7 @@ make project
 > use rusty_key
 Вы применяете ключ, и замок щёлкает. Сундук открыт!
 В сундуке сокровище! Вы победили!
-
+```
 ## Демонстрация игрового процесса
 
 [![Asciinema demo](https://asciinema.org/a/XW90nztqNAMkEqcjPmlQPlJqf.svg)](https://asciinema.org/a/XW90nztqNAMkEqcjPmlQPlJqf)
